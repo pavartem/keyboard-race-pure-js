@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="/public/style.css">
+    <script src="race.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.2.0/socket.io.dev.js"></script>
+    <title>User in race</title>
+</head>
+
+<body>
+    <div class="users">
+        <div class="user">
+            <span>User1</span>
+            <progress max="100" value="25"></progress>
+        </div>
+        <div class="user1">
+            <span>User1</span>
+            <progress max="100" value="25"></progress>
+        </div>
+        <div class="user2">
+            <span>Me</span>
+            <progress max="100" value="0" id="myProgress"></progress>
+        </div>
+        <div style="width: 50vw;">
+            <h1 id="status">Start</h1>
+            <h3 id="text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla dolores, perferendis
+                veritatis eligendi
+                in enim sapiente cumque eos, quidem nam consequuntur laboriosam, cum vel corrupti asperiores dolore
+                itaque ipsum quo?
+                Tenetur voluptatum eius voluptatem vel modi iste laboriosam reprehenderit natus ab vero odit illo unde
+                dolor obcaecati deleniti, aut repellat? Omnis dolore quisquam beatae commodi, provident vel vero atque
+                optio.
+            </h3>
+        </div>
+        <textarea name="" id="message-text" cols="200" rows="20"></textarea>
+    </div>
+
+</body>
+
+</html>

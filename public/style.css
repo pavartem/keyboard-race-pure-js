@@ -1,0 +1,9 @@
+* {
+    box-sizing: border-box;
+}
+body{
+    text-align: center;
+}
+.text{
+    width: 300px;
+}
