@@ -1,3 +1,35 @@
+const texts = [
+
+    "The search will find the word even within words in the text. Therefore, if we’re searching for the word “able” then we’ll find it in “comfortable” and “tablet”. The search will be case-insensitive. The algorithm is based on the naïve string search approach. This means that since we’re naïve about the nature of the characters in the word and the text string, we’ll use brute force to check every location of the text for an instance of the search word.",
+    "If you are feeling hungry and don’t know where to head to fill your stomach in Nagoya, I will tell you the 6 Must-try restaurants that you have to visit. Nagoya is one of Japan’s three largest cities and is well known for its rich history. The city is also well known for its delicious cuisine, with delightful dishes that will transport you to a place full of aromas and flavors.",
+    "While is not located in Nagoya’s heart but close to it, I felt that I have to include it due to its delicious burgers. Located in Kiyosu, next to Kirin Beer Nagoya Factory, makes it a great place to enjoy a lunch or dinner after doing the tour inside the factory. Most of their dishes are made to combine perfectly with a beer or even sake, and the price is quite affordable, you can enjoy a delicious Teriyaki chicken burger for only 950 yen, or you can opt for a course that comes with unlimited drinks.",
+    "One of my favorite places to enjoy a delicious Japanese bowl dish for lunch in Sakae, after a morning shopping around. The lunch menu is affordable and it has many options to choose from, for example, the set in the photo it cost 1,200 yen and is called BBQ Gohan, that is basically pork, vegetables, and rice accompanied by a bowl of miso soup, and warabi mochi as a dessert.",
+    "The dishes are delicious and the most popular one is the Taiwan ramen style, that is quite spicy and will cost you 630 yen. If you want to try their popular dish but don’t like too spicy, you can order the American version that is less spicy."
+
+];
+
+
+function countDown() {
+    let newTime = new Date().getTime();
+    newTime += 40000;
+
+    let x = setInterval(function () {
+
+        let now = new Date().getTime();
+
+        let distance = newTime - now;
+        let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        document.getElementById("countDown").innerHTML = seconds + 's';
+
+        if (distance < 0) {
+            location.replace('/done');
+            clearInterval(x);
+            document.getElementById("countDown").innerHTML = "EXPIRED";
+        }
+    }, 1000);
+}
+
 window.onload = () => {
 
     const jwt = localStorage.getItem('jwt');
@@ -6,14 +38,14 @@ window.onload = () => {
     } else {
         const socket = io.connect('http://localhost:3000');
 
-        //const submitBtn = document.querySelector('#submit-btn');
+        countDown();
+
         const textField = document.querySelector('#message-text');
         const text = document.querySelector('#text');
+        text.innerHTML = texts[Math.floor(Math.random() * 4)];
         const textLength = text.innerHTML.length;
 
         let usersArr = [];
-
-        //const messageListElem = document.querySelector('#message-list');
 
         socket.emit('UserEnteredChannel', { token: jwt });
 
@@ -63,9 +95,6 @@ window.onload = () => {
             } else {
                 newH1.innerHTML = 'bad';
             }
-
-
-            //messageListElem.appendChild(newLi);
         });
 
     }

@@ -20,8 +20,16 @@ app.get('/', function (req, res) {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-app.get('/race', /*passport.authenticate('jwt'),*/ function (req, res) {
+app.get('/race', function (req, res) {
   res.sendFile(path.join(__dirname, 'race.html'));
+});
+
+app.get('/wait', function (req, res) {
+  res.sendFile(path.join(__dirname, 'waiting.html'));
+});
+
+app.get('/done', function (req, res) {
+  res.sendFile(path.join(__dirname, 'done.html'));
 });
 
 app.get('/login', function (req, res) {
@@ -64,5 +72,9 @@ io.on('connection', socket => {
 
     socket.broadcast.emit('myTextChange', { message, user: userLogin, usersProgress: usersProgress });
     socket.emit('myTextChange', { message, user: userLogin, usersProgress });
+  });
+  socket.on('raceEnded', () => {
+    socket.broadcast.emit('raceResults', { usersProgress });
+    socket.emit('raceResults', { usersProgress });
   });
 });
