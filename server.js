@@ -39,11 +39,30 @@ app.post('/login', function (req, res) {
   }
 });
 
+let usersProgress = [];
+
 io.on('connection', socket => {
-  socket.on('submitMessage', payload => {
+
+  socket.on('UserEnteredChannel', payload => {
+    const myLogin = jwt.decode(payload.token).login;
+    console.log('Mylogin: ', myLogin);
+    usersProgress.push({ user: myLogin, value: 0 });
+    console.log(usersProgress);
+    socket.broadcast.emit('UserConnected', { user: myLogin });
+    socket.emit('UserConnected', { user: myLogin });
+  });
+  socket.on('changeText', payload => {
     const { message, token } = payload;
     const userLogin = jwt.decode(token).login;
-    socket.broadcast.emit('myTextChange', { message, user: userLogin });
-    socket.emit('myTextChange', { message, user: userLogin });
+    socket.broadcast.emit('UserConnected', { user: userLogin });
+    socket.emit('UserConnected', { user: userLogin });
+    let userToChange = usersProgress.filter(x => x.user === userLogin)[0];
+    if (userToChange) {
+      userToChange.value = message.length;
+    }
+    console.log(usersProgress);
+
+    socket.broadcast.emit('myTextChange', { message, user: userLogin, usersProgress: usersProgress });
+    socket.emit('myTextChange', { message, user: userLogin, usersProgress });
   });
 });

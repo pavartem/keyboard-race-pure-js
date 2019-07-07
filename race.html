@@ -12,28 +12,17 @@
 </head>
 
 <body>
-    <div class="users">
-        <div class="user">
-            <span>User1</span>
-            <progress max="100" value="25"></progress>
-        </div>
-        <div class="user1">
-            <span>User1</span>
-            <progress max="100" value="25"></progress>
-        </div>
-        <div class="user2">
-            <span>Me</span>
-            <progress max="100" value="0" id="myProgress"></progress>
-        </div>
+    <div id="race-users">
+
+    </div>
+    <div id="users">
         <div style="width: 50vw;">
             <h1 id="status">Start</h1>
-            <h3 id="text">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla dolores, perferendis
-                veritatis eligendi
-                in enim sapiente cumque eos, quidem nam consequuntur laboriosam, cum vel corrupti asperiores dolore
-                itaque ipsum quo?
-                Tenetur voluptatum eius voluptatem vel modi iste laboriosam reprehenderit natus ab vero odit illo unde
-                dolor obcaecati deleniti, aut repellat? Omnis dolore quisquam beatae commodi, provident vel vero atque
-                optio.
+            <h3 id="text">The search will find the word even within words in the text. Therefore, if we’re searching for
+                the word “able” then we’ll find it in “comfortable” and “tablet”. The search will be case-insensitive.
+                The algorithm is based on the naïve string search approach. This means that since we’re naïve about the
+                nature of the characters in the word and the text string, we’ll use brute force to check every location
+                of the text for an instance of the search word.
             </h3>
         </div>
         <textarea name="" id="message-text" cols="200" rows="20"></textarea>
