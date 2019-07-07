@@ -65,8 +65,6 @@ window.onload = () => {
                 newUserProgress.max = 100;
                 newUser.appendChild(newUserProgress);
                 users.appendChild(newUser);
-            } else {
-                console.log('bad');
             }
         });
 
@@ -75,11 +73,13 @@ window.onload = () => {
         });
 
         socket.on('myTextChange', payload => {
-            console.log(payload);
             const newH1 = document.querySelector('#status');
             const myTextLength = textField.value.length;
-            console.log(myTextLength);
-            console.log(text.innerHTML);
+            const nextCharacter = text.innerHTML[myTextLength];
+            console.log(nextCharacter);
+            const myText = document.getElementById('myText');
+            myText.innerHTML = 'Next character: ' + nextCharacter;
+            myText.style.color = 'red';
             if (text.innerHTML.indexOf(payload.message) === 0) {
                 newH1.innerHTML = `${Math.round(myTextLength / textLength * 100)}%`;
                 const myProgress = document.getElementById("race-users").firstElementChild;
