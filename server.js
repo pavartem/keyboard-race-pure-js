@@ -76,5 +76,23 @@ io.on('connection', socket => {
   socket.on('raceEnded', () => {
     socket.broadcast.emit('raceResults', { usersProgress });
     socket.emit('raceResults', { usersProgress });
+    usersProgress = [];
   });
+  socket.on('raceInfo', () => {
+    socket.broadcast.emit('raceResults', { usersProgress });
+    socket.emit('raceResults', { usersProgress });
+  });
+
+  socket.on('beforeFinish', () => {
+    const myLogin = jwt.decode(payload.token).login;
+    socket.broadcast.emit('userBeforeFinish', { myLogin });
+    socket.emit('userBeforeFinish', { myLogin });
+  });
+
+  socket.on('finished', () => {
+    const myLogin = jwt.decode(payload.token).login;
+    socket.broadcast.emit('userFinished', { myLogin });
+    socket.emit('userFinished', { myLogin });
+  });
+
 });

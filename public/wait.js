@@ -5,7 +5,7 @@ window.onload = () => {
         location.replace('/login');
     } else {
         let newTime = new Date().getTime();
-        newTime += 40000;
+        newTime += 10000;
 
         let x = setInterval(function () {
 

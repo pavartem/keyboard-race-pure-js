@@ -8,7 +8,6 @@ const texts = [
 
 ];
 
-
 function countDown() {
     let newTime = new Date().getTime();
     newTime += 40000;
@@ -29,6 +28,7 @@ function countDown() {
         }
     }, 1000);
 }
+
 
 window.onload = () => {
 
@@ -96,7 +96,87 @@ window.onload = () => {
                 newH1.innerHTML = 'bad';
             }
         });
-
     }
+    //Self-invoking function
+
+    let helper = (() => {
+        const socket = io.connect('http://localhost:3000');
+        let helperTexts = [
+            'Стадіон, так стадіон... Сьогоднішня гонка буде проходити на одному з найбільших стадіонів Binary Stadium. Телетрансляція буде на всіх світових телеканалах. Учасники готувались дуже довго і готові показати на що вони здатні.',
+            'В нас є фаворит, і це ',
+            " Учасник закінчив гонку і п'є смізі на фініші !!! І це учасник по імені ",
+            "Одному з учасників залишилось зовсім трішки до фінішу. Чи не спіткнеться він. Це гравець з ніком "
+        ];
+        let jokes = [
+            'Анекдот: Добра порада чоловікам. На ніч потрібно випивати 3-5 літрів пива, опухле обличчя з ранку легше голити!',
+            'Анекдот: У жіночий гуртожиток вночі через вікно заліз насильник. Під ранок він плакав і просився до мами!',
+            "Анекдот: Об'ява: На виробництво пухирчастої плівки потрібні працівники з великою силою волі.",
+            'Анекдот: Не гроші псують людину, а їх недолік!'
+        ];
+
+        const textField = document.querySelector('#message-text');
+        const text = document.querySelector('#text');
+
+        const helperText = document.getElementById('referee-text');
+        // Pure func.
+        let changeText = (text, mockText, winner = '') => {
+            text.innerHTML = mockText + winner;
+        };
+
+        //Currying and self-invoking function
+        let curriedChangeText = _.curry(changeText);
+        let start = (() => curriedChangeText(helperText)(helperTexts[0]))();
+
+        let halfMinuteInfo = () => {
+            let max = 0;
+            let maxUser = '';
+            socket.emit('raceInfo');
+            socket.on('raceResults', payload => {
+                payload.usersProgress.forEach(element => {
+                    if (element.value >= max) {
+                        max = element.value;
+                        maxUser = element.user;
+                        changeText(helperText, helperTexts[1], maxUser);
+                    }
+                });
+            });
+        }
+        //Proxy Pattern
+
+        let proxied = halfMinuteInfo;
+        halfMinuteInfo = () => {
+            console.log('Proxy Pattern');
+            return proxied.apply(this, arguments);
+        }
+
+        let beforeFinish = () => {
+            const jwt = localStorage.getItem('jwt');
+            socket.emit('beforeFinish', { token: jwt });
+            socket.on('userBeforeFinish', payload => {
+                changeText(helperText, helperTexts[3], payload.myLogin);
+            });
+        }
+
+        let finish = () => {
+            const jwt = localStorage.getItem('jwt');
+            socket.emit('finished', { token: jwt });
+            socket.on('userFinished', payload => {
+                changeText(helperText, helperTexts[2], payload.myLogin);
+            });
+        };
+
+        setInterval(function () {
+            let randomNum = Math.floor(Math.random() * 4);
+            changeText(helperText, jokes[randomNum]);
+        }, 8000);
+
+        setInterval(function () {
+            halfMinuteInfo()
+        }, 30000);
+
+        if ((textField.innerHTML.length + 30) === text.innerHTML.length) beforeFinish();
+        if (textField.innerHTML.length === text.innerHTML.length) finish();
+
+    })();
 
 }
